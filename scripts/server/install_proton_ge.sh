@@ -1,0 +1,123 @@
+#!/bin/bash
+set -euo pipefail
+
+  is_proton_ge_installed(){
+      log "LOG" "VÉRIFICATION & INSTALLATION DE PROTON GE $PROTON_GE_VERSION POUR LE SERVEUR: $ARK_SERVER_SERVICE"
+      if [[ -f "$PROTON_GE_EXE_FILE" ]] && [[ -d "$STEAM_COMPAT_DATA_PATH/default_pfx" ]]; then
+        log "OK" "PROTON GE $PROTON_GE_VERSION EST DÉJÀ INSTALLÉ SUR LE SERVEUR: $ARK_SERVER_SERVICE."
+        return 1
+      else
+        log "WARNING" "PROTON GE $PROTON_GE_VERSION N'EST PAS INSTALLÉ SUR LE SERVEUR: $ARK_SERVER_SERVICE."
+        return 0
+      fi
+  }
+
+  create_proton_ge_temp_dir(){
+    log "LOG" "CRÉATION DU RÉPERTOIRE TEMPORAIRE POUR L'INSTALLATION DE $PROTON_GE_VERSION."
+    if PROTON_GE_TEMP_DIR=$(sudo -u "$USER_ACCOUNT" mktemp -d -t proton_ge_install_"${PROTON_GE_VERSION}"_XXXXX); then
+      log "SUCCESS" "RÉPERTOIRE TEMPORAIRE POUR L'INSTALLATION DE $PROTON_GE_VERSION CRÉÉ."
+    else
+      log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE LA CRÉATION DU RÉPERTOIRE TEMPORAIRE."
+      log "DEBUG" "VEUILLEZ ESSAYER DE CRÉER LE RÉPERTOIRE TEMPORAIRE MANUELLEMENT AVEC LA COMMANDE SUIVANTE:"
+      log "DEBUG" "sudo -u $USER_ACCOUNT mktemp -d -t proton_ge_install_${PROTON_GE_VERSION}_XXXXX"
+      exit 1
+    fi
+  }
+
+  move_to_proton_ge_temp_dir(){
+    log "LOG" "DÉPLACEMENT DANS LE RÉPERTOIRE TEMPORAIRE POUR L'INSTALLATION DE $PROTON_GE_VERSION."
+    if cd "$PROTON_GE_TEMP_DIR"; then
+      log "SUCCESS" "DÉPLACEMENT DANS LE RÉPERTOIRE TEMPORAIRE RÉUSSI."
+    else
+      log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DU DÉPLACEMENT DANS LE RÉPERTOIRE TEMPORAIRE."
+      log "DEBUG" "VEUILLEZ ESSAYER DE VOUS DÉPLACER MANUELLEMENT DANS LE RÉPERTOIRE TEMPORAIRE AVEC LA COMMANDE SUIVANTE:"
+      log "DEBUG" "cd $PROTON_GE_TEMP_DIR"
+      exit 1
+    fi
+  }
+
+  download_proton_ge(){
+    log "LOG" "TÉLÉCHARGEMENT DE L'ARCHIVE PROTON $PROTON_GE_VERSION VERS LE RÉPERTOIRE TEMPORAIRE."
+    if sudo curl -# -L "$PROTON_GE_TGZ" -o "$PROTON_GE_VERSION.tar.gz"; then
+      log "SUCCESS" "ARCHIVE PROTON $PROTON_GE_VERSION TÉLÉCHARGÉE."
+    else
+      log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DU TÉLÉCHARGEMENT DE L'ARCHIVE PROTON $PROTON_GE_VERSION."
+      log "DEBUG" "VEUILLEZ ESSAYER DE TÉLÉCHARGER L'ARCHIVE MANUELLEMENT AVEC LA COMMANDE SUIVANTE:"
+      log "DEBUG" "sudo curl -# -L $PROTON_GE_TGZ -o $PROTON_GE_VERSION.tar.gz"
+      exit 1
+    fi
+  }
+
+  download_proton_ge_checksum(){
+    log "LOG" "TÉLÉCHARGEMENT DE LA SOMME DE CONTRÔLE SHA512 DE L'ARCHIVE PROTON $PROTON_GE_VERSION."
+    if sudo curl -# -L "$PROTON_GE_CHECKSUM" -o "$PROTON_GE_SHA"; then
+      log "SUCCESS" "SOMME DE CONTRÔLE SHA512 DE L'ARCHIVE PROTON $PROTON_GE_VERSION TÉLÉCHARGÉE."
+    else
+      log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DU TÉLÉCHARGEMENT DE LA SOMME DE CONTRÔLE SHA512 DE L'ARCHIVE PROTON $PROTON_GE_VERSION."
+      log "DEBUG" "VEUILLEZ ESSAYER DE TÉLÉCHARGER LA SOMME DE CONTRÔLE SHA512 MANUELLEMENT AVEC LA COMMANDE SUIVANTE:"
+      log "DEBUG" "sudo curl -# -L $PROTON_GE_CHECKSUM -o $PROTON_GE_SHA"
+      exit 1
+    fi
+  }
+
+  verify_proton_ge_integrity(){
+    log "LOG" "VÉRIFICATION DE L'INTÉGRITÉ DE L'ARCHIVE PROTON $PROTON_GE_VERSION AVEC LA SOMME DE CONTRÔLE SHA512."
+    if sudo sha512sum -c "$PROTON_GE_SHA"; then
+      log "SUCCESS" "L'INTÉGRITÉ DE L'ARCHIVE PROTON $PROTON_GE_VERSION EST VÉRIFIÉE."
+    else
+      log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE LA VÉRIFICATION DE L'INTÉGRITÉ DE L'ARCHIVE PROTON $PROTON_GE_VERSION."
+      log "DEBUG" "VEUILLEZ VÉRIFIER L'INTÉGRITÉ DE L'ARCHIVE MANUELLEMENT AVEC LA COMMANDE SUIVANTE:"
+      log "DEBUG" "sudo sha512sum -c $PROTON_GE_SHA"
+      exit 1
+    fi
+  }
+
+  extract_proton_ge(){
+    log "LOG" "EXTRACTION DE L'ARCHIVE PROTON $PROTON_GE_VERSION DANS LE RÉPERTOIRE COMPATIBILITYTOOLS.D..."
+    if tar -xzf "$PROTON_GE_VERSION.tar.gz" -C "$PROTON_GE_COMPATIBILITY_TOOLS_DIR" --strip-components=1; then
+      log "SUCCESS" "ARCHIVE PROTON $PROTON_GE_VERSION EXTRAITE DANS $PROTON_GE_COMPATIBILITY_TOOLS_DIR."
+    else
+      log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE L'EXTRACTION DE L'ARCHIVE PROTON $PROTON_GE_VERSION."
+      log "DEBUG" "VEUILLEZ ESSAYER D'EXTRAIRE L'ARCHIVE MANUELLEMENT AVEC LA COMMANDE SUIVANTE:"
+      log "DEBUG" "tar -xzf $PROTON_GE_VERSION.tar.gz -C $PROTON_GE_COMPATIBILITY_TOOLS_DIR --strip-components=1"
+      exit 1
+    fi
+  }
+
+  remove_proton_ge_temp_dir(){
+    log "LOG" "SUPPRESSION DU RÉPERTOIRE TEMPORAIRE POUR L'INSTALLATION DE PROTON $PROTON_GE_VERSION..."
+    if rm -rf "$PROTON_GE_TEMP_DIR"; then
+      log "SUCCESS" "RÉPERTOIRE TEMPORAIRE SUPPRIMÉ APRÈS L'INSTALLATION DE PROTON $PROTON_GE_VERSION."
+    else
+      log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE LA SUPPRESSION DU RÉPERTOIRE TEMPORAIRE."
+      log "DEBUG" "VEUILLEZ ESSAYER DE SUPPRIMER LE RÉPERTOIRE TEMPORAIRE MANUELLEMENT AVEC LA COMMANDE SUIVANTE:"
+      log "DEBUG" "rm -rf $PROTON_GE_TEMP_DIR"
+      exit 1
+    fi
+  }
+
+  install_proton_ge(){
+
+    local PROTON_GE_TGZ
+    PROTON_GE_TGZ="$(curl -s "$PROTON_GE_URL" | grep browser_download_url | cut -d\" -f4 | grep .tar.gz)"
+    local PROTON_GE_VERSION
+    PROTON_GE_VERSION="$(basename "$PROTON_GE_TGZ" .tar.gz)"
+    local PROTON_GE_CHECKSUM
+    PROTON_GE_CHECKSUM="$(curl -s "$PROTON_GE_URL" | grep browser_download_url | cut -d\" -f4 | grep .sha512sum)"
+    local PROTON_GE_SHA
+    PROTON_GE_SHA="$(basename "$PROTON_GE_CHECKSUM")"
+
+    if is_proton_ge_installed; then
+      create_proton_ge_temp_dir
+      move_to_proton_ge_temp_dir
+      download_proton_ge
+      download_proton_ge_checksum
+      verify_proton_ge_integrity
+      folder create "compatibilitytools.d" "$PROTON_GE_COMPATIBILITY_TOOLS_DIR" "777"
+      extract_proton_ge
+      remove_proton_ge_temp_dir
+      folder create "compatdata" "$STEAM_COMPAT_DATA_PATH" "777"
+      file copy "default_pfx" "$PROTON_GE_COMPATIBILITY_TOOLS_DIR/files/share/default_pfx" "$STEAM_COMPAT_DATA_PATH"
+    fi
+
+  }
