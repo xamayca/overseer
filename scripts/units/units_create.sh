@@ -21,7 +21,7 @@ WorkingDirectory=$ARK_SERVER_EXE_DIR
 Environment="XDG_RUNTIME_DIR=/run/user/$(id -u)"
 Environment="STEAM_COMPAT_CLIENT_INSTALL_PATH=$STEAM_COMPAT_CLIENT_INSTALL_PATH"
 Environment="STEAM_COMPAT_DATA_PATH=$STEAM_COMPAT_DATA_PATH"
-ExecStart=$PROTON_GE_EXE_FILE run $ARK_SERVER_EXE_FILE $COMMAND_LINE
+ExecStart=$PROTON_GE_EXE_FILE run $ARK_SERVER_EXE_FILE $COMMAND_LINE >> $ARK_SERVER_LOG_FILE.log 2>&1
 ExecStop=/usr/bin/pkill -f $ARK_SERVER_EXE_FILE
 Restart=on-failure
 TimeoutStopSec=20
@@ -51,7 +51,7 @@ Type=simple
 User=$USER_ACCOUNT
 Group=$USER_ACCOUNT
 WorkingDirectory=$WEB_SERVER_WORKING_DIR
-ExecStart=$WEB_SERVER_START_COMMAND
+ExecStart=$WEB_SERVER_START_COMMAND >> $WEB_SERVER_LOG_FILE.log 2>&1
 Restart=on-failure
 RestartSec=5
 KillSignal=SIGINT

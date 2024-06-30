@@ -14,7 +14,7 @@ install_non_free_repo(){
       system_update
     else
       log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE L'INSTALLATION DES DÉPÔTS NON FREE SUR $HOSTNAME."
-      log "DEBUG" "VEUILLEZ ESSAYER À NOUVEAU OU AJOUTER LES DÉPÔTS MANUELLEMENT AVEC LA COMMANDE SUIVANTE:"
+      log "DEBUG" "VEUILLEZ ESSAYER D'AJOUTER LES DÉPÔTS NON FREE MANUELLEMENT AVEC LA COMMANDE SUIVANTE:"
       log "DEBUG" "sudo add-apt-repository 'deb $non_free_repo'"
       exit 1
     fi

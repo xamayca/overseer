@@ -23,7 +23,7 @@ check_steam_cmd_accept_license(){
       log "SUCCESS" "LA LICENCE STEAMCMD A ÉTÉ ACCEPTÉE."
     else
       log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE L'ACCEPTATION DE LA LICENCE STEAMCMD."
-      log "DEBUG" "VEUILLEZ ACCEPTER LA LICENCE MANUELLEMENT EN EXÉCUTANT LA COMMANDE SUIVANTE:"
+      log "DEBUG" "VEUILLEZ ACCEPTER LA LICENCE MANUELLEMENT A L'AIDE DE LA COMMANDE SUIVANTE:"
       log "DEBUG" "sudo dpkg-reconfigure steamcmd"
       exit 1
     fi
@@ -36,7 +36,8 @@ check_steam_cmd_non_interactive_install(){
     log "SUCCESS" "LE PAQUET STEAMCMD A ÉTÉ INSTALLÉ SUR $HOSTNAME."
   else
     log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE L'INSTALLATION DU PAQUET STEAMCMD SUR $HOSTNAME."
-    log "DEBUG" "VEUILLEZ ESSAYER D'INSTALLER LE PAQUET MANUELLEMENT AVEC LA COMMANDE: sudo apt-get install steamcmd -y"
+    log "DEBUG" "VEUILLEZ ESSAYER D'INSTALLER LE PAQUET MANUELLEMENT A L'AIDE DE LA COMMANDE SUIVANTE:"
+    log "DEBUG" "sudo apt-get install steamcmd -y"
     exit 1
   fi
 }
@@ -47,13 +48,13 @@ check_steam_cmd_user_install(){
     log "SUCCESS" "STEAMCMD A ÉTÉ MIS À JOUR AVEC SUCCÈS."
   else
     log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE LA MISE À JOUR DE STEAMCMD SUR $HOSTNAME."
-    log "DEBUG" "VEUILLEZ ESSAYER DE METTRE À JOUR STEAMCMD MANUELLEMENT AVEC LA COMMANDE: sudo -u $USER_ACCOUNT $STEAM_CMD_PATH +quit"
+    log "DEBUG" "VEUILLEZ ESSAYER DE METTRE À JOUR STEAMCMD MANUELLEMENT A L'AIDE DE LA COMMANDE SUIVANTE:"
+    log "DEBUG" "sudo -u $USER_ACCOUNT $STEAM_CMD_EXE_FILE +quit"
     exit 1
   fi
 }
 
 install_steam_cmd(){
-
 
   if is_steam_cmd_installed; then
     check_steam_cmd_accept_license

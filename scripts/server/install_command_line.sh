@@ -3,7 +3,7 @@ set -euo pipefail
 
 install_command_line() {
 
-  log "LOG" "GÉNÉRATION DE LA LIGNE DE COMMANDE POUR LE LANCEMENT DU SERVEUR: $ARK_SERVER_SERVICE"
+  log "LOG" "GÉNÉRATION DE LA LIGNE DE COMMANDE POUR LE LANCEMENT DU SERVEUR SUR $HOSTNAME."
 
   QUERY_PARAMS=""
   FLAG_PARAMS=""
@@ -93,6 +93,7 @@ install_command_line() {
     "DinoDamageMultiplier=$DINO_DAMAGE_MULTIPLIER"
     "DinoResistanceMultiplier=$DINO_RESISTANCE_MULTIPLIER"
     "MaxTamedDinos=$MAX_TAMED_DINOS"
+    "EventColorsChanceOverride=$EVENT_COLORS_CHANCE_OVERRIDE"
     "ServerAdminPassword=$SERVER_ADMIN_PASSWORD"
   )
 
@@ -118,6 +119,10 @@ install_command_line() {
     "noperfthreads=$NO_PERF_THREADS"
     "forceuseperfthreads=$FORCE_USE_PERF_THREADS"
     "NoAI=$NO_AI"
+    "ForceDupeLog=$FORCE_DUPE_LOG"
+    "ignoredupeditems=$IGNORE_DUPED_ITEMS"
+    "disableCharacterTracker=$DISABLE_CHARACTER_TRACKER"
+    "UnstasisDinoObstructionCheck=$UNSTASIS_DINO_OBSTRUCTION_CHECK"
   )
 
   # Ajout des paramètres avec ? + valeur
@@ -151,7 +156,7 @@ install_command_line() {
     fi
   done
 
-  log "SUCCESS" "LIGNE DE COMMANDE GÉNÉRÉE POUR LE LANCEMENT DU SERVEUR: $ARK_SERVER_SERVICE"
-  log "INFO" "LIGNE DE COMMANDE DU SERVEUR $ARK_SERVER_SERVICE:${JUMP_LINE}${JUMP_LINE}$QUERY_PARAMS$FLAG_PARAMS"
+  log "SUCCESS" "LIGNE DE COMMANDE GÉNÉRÉE POUR LE LANCEMENT DU SERVEUR SUR $HOSTNAME."
+  log "INFO" "LIGNE DE COMMANDE DU SERVEUR:${JUMP_LINE}${JUMP_LINE}$QUERY_PARAMS$FLAG_PARAMS"
 
 }

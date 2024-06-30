@@ -28,45 +28,45 @@ install_service() {
   local type="$1"
   local name path alias
 
-  # seul root peu lancer avec ark_server mais pas web_server
-  if [ "$EUID" -ne 0 ] && [ "$type" == "ark_server" ]; then
-    log "ERROR" "VOUS DEVEZ EXÉCUTER CE SCRIPT EN TANT QUE ROOT POUR INSTALLER LE SERVICE $ARK_SERVER_SERVICE."
-    return
-  else
-    log "INFO" "INSTALLATION DU SERVICE $type SUR $HOSTNAME."
-  fi
+  log "INFO" "INSTALLATION DU SERVICE $type SUR $HOSTNAME EN COURS."
 
-  if [ "$type" == "ark_server" ]; then
-    name="$ARK_SERVER_SERVICE"
-    path="$ARK_SERVER_SERVICE_FILE"
-    alias="$ARK_SERVER_SERVICE_ALIAS"
-  elif [ "$type" == "web_server" ]; then
-    name="$WEB_SERVER_SERVICE"
-    path="$WEB_SERVER_SERVICE_FILE"
-    alias="$WEB_SERVER_SERVICE_ALIAS"
-  else
-    log "ERROR" "LE TYPE DE SERVICE $type N'EST PAS RECONNU."
-    log "DEBUG" "VEUILLEZ FOURNIR UN TYPE DE SERVICE VALIDE: {ark_server|web_server}"
-    log "DEBUG" "EXEMPLE: install_create ark_server"
-    log "DEBUG" "EXEMPLE: install_create web_server"
-    return
-  fi
+  case "$type" in
+    ark)
+      name="$ARK_SERVER_SERVICE"
+      path="$ARK_SERVER_SERVICE_FILE"
+      alias="$ARK_SERVER_SERVICE_ALIAS"
+      ;;
+    web)
+      name="$WEB_SERVER_SERVICE"
+      path="$WEB_SERVER_SERVICE_FILE"
+      alias="$WEB_SERVER_SERVICE_ALIAS"
+      ;;
+    *)
+      log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE L'INSTALLATION DU SERVICE $type SUR $HOSTNAME."
+      log "DEBUG" "VEUILLEZ FOURNIR UN TYPE DE SERVICE VALIDE: {ark|web}"
+      log "DEBUG" "EXEMPLE: install_service ark"
+      log "DEBUG" "EXEMPLE: install_service web"
+      return
+      ;;
+  esac
 
   if is_service_exist "$name" "$path"; then
-    if prompt confirm "VOULEZ-VOUS SUPPRIMER LE SERVICE $name SUR $HOSTNAME POUR LE SERVEUR $ARK_SERVER_SERVICE? [Oui/Non]"; then
+    if prompt confirm "VOULEZ-VOUS SUPPRIMER LE SERVICE $name SUR $HOSTNAME? [Oui/Non]"; then
       log "WARNING" "LE SERVICE $name VA ÊTRE SUPPRIMÉ SUR $HOSTNAME."
-      service_handler stop "$name"
-      service_handler disable "$name"
-      service_handler delete "$name"
+      service stop "$name"
+      service disable "$name"
+      service delete "$name" "$path"
+      service delete "$alias" "$path"
+      service daemon-reload "$name"
       exit 1
     else
       log "SUCCESS" "LE SERVICE $name NE SERA PAS SUPPRIMÉ SUR $HOSTNAME."
     fi
   else
-    units_create "$type"
-    service_handler daemon_reload "$name"
-    service_handler enable "$name"
+    install_unit "$type"
+    service daemon-reload "$name"
+    service enable-now "$name"
+    service start "$name"
     service_commands_infos "$alias"
   fi
-
 }

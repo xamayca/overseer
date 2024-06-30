@@ -8,8 +8,8 @@ SYSTEM_TIMEZONE="Europe/Paris"
 
 # [ Script Versioning ]
 SHOW_HEADER_SYSTEM_INFO="True"
-INSTALLER_SCRIPT_VERSION="0.3.8"
-OVERSEER_SCRIPT_VERSION="0.2.5"
+INSTALLER_SCRIPT_VERSION="0.3.9"
+OVERSEER_SCRIPT_VERSION="0.2.7"
 
 # [ Community URLs ]
 COMMUNITY_WEBSITE_URL="https://www.france-survival.fr/"
@@ -19,12 +19,8 @@ COMMUNITY_INSTAGRAM_URL="https://www.instagram.com/francesurvival/"
 COMMUNITY_FACEBOOK_URL="https://www.facebook.com/profile.php?id=61553584645099"
 
 # [ Dynamic Configuration & Admin White List URLs ]
-ADMIN_LIST_URL="http://127.0.0.1:8080/admin-list/admins.txt"
-DYNAMIC_CONFIG_URL="http://127.0.0.1:8080/dynamic-config/current/dyn.ini"
-
-# [ Script & Configuration Files ]
-CONFIG_COMMON_FILE="${CURRENT_DIR}/config/common.sh"
-CONFIG_SERVER_FILE="${CURRENT_DIR}/config/server.sh"
+ADMIN_LIST_URL="http://127.0.0.1:8080/admins/admins.txt"
+DYNAMIC_CONFIG_URL="http://127.0.0.1:8080/dynamic/current/dyn.ini"
 
 # [ ARK: Server Directory ]
 ARK_APP_ID="2430930"
@@ -45,8 +41,14 @@ GUS_INI_FILE="${ARK_CONFIG_DIR}/GameUserSettings.ini"
 GAME_INI_FILE="${ARK_CONFIG_DIR}/Game.ini"
 
 # [ Overseer Manager ]
-OVERSEER_DIR="${USER_DIR}/overseer"
-OVERSEER_SCRIPT_FILE="${OVERSEER_DIR}/overseer.sh"
+OVERSEER_INSTALL_DIR="/home/${USER_ACCOUNT}/overseer"
+OVERSEER_SCRIPT_FILE="${OVERSEER_INSTALL_DIR}/overseer.sh"
+OVERSEER_MANAGER_DIR="${OVERSEER_INSTALL_DIR}/manager"
+
+# [ Overseer Logs ]
+WEB_SERVER_LOG_FILE="${OVERSEER_MANAGER_DIR}/logs/web-server.log"
+ARK_SERVER_LOG_FILE="${OVERSEER_MANAGER_DIR}/logs/ark-server.log"
+CRONTAB_LOG_FILE="${OVERSEER_MANAGER_DIR}/logs/cron-overseer.log"
 
 # [ Systemd: Service Directory ]
 SERVICE_DIR="/etc/systemd/system"
@@ -62,13 +64,8 @@ WEB_SERVER_SERVICE="AscendedServer${MAP_NAME}-web"
 WEB_SERVER_SERVICE_ALIAS="${MAP_NAME}-web.service"
 
 # [ Service: Web server Folders ]
-WEB_SERVER_DIR="${OVERSEER_DIR}/web"
+WEB_SERVER_DIR="${OVERSEER_INSTALL_DIR}/manager/web"
 WEB_SERVER_SERVICE_FILE="${SERVICE_DIR}/${WEB_SERVER_SERVICE}.service"
-WEB_SERVER_WORKING_DIR="${WEB_SERVER_DIR}/web"
-
-# [ Overseer Logs ]
-OVERSEER_LOG_DIR="${OVERSEER_DIR}/logs"
-CRONTAB_LOG_FILE="${OVERSEER_LOG_DIR}/cron-overseer.log"
 
 # [ Service: Dynamic Config & Admin White List Folder ]
 DYNAMIC_CONFIG_DIR="${WEB_SERVER_DIR}/dynamic"
