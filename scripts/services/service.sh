@@ -37,6 +37,20 @@ service_enable_now(){
   fi
 }
 
+service_disable_now(){
+  service_name=$1
+
+  log "LOG" "DÉSACTIVATION DU SERVICE $service_name SUR $HOSTNAME."
+  if sudo systemctl disable --now "$service_name"; then
+    log "SUCCESS" "LE SERVICE $service_name A ÉTÉ DÉSACTIVÉ."
+  else
+    log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE LA DÉSACTIVATION DU SERVICE $service_name."
+    log "DEBUG" "VEUILLEZ ESSAYER DE DÉSACTIVER LE SERVICE MANUELLEMENT A L'AIDE DE LA COMMANDE SUIVANTE:"
+    log "DEBUG" "sudo systemctl disable --now $service_name"
+    exit 1
+  fi
+}
+
 service_delete(){
   log "LOG" "VÉRIFICATION DE L'EXISTENCE DU FICHIER DE SERVICE $service_name A L'EMPLACEMENT $service_path SUR $HOSTNAME."
   if [ -f "$service_path" ]; then
@@ -106,6 +120,9 @@ service(){
       ;;
     delete)
       service_delete "$service_name"
+      ;;
+    disable-now)
+      service_disable "$service_name" "$service_path"
       ;;
     edit)
       local type="$3"

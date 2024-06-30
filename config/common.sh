@@ -8,8 +8,8 @@ SYSTEM_TIMEZONE="Europe/Paris"
 
 # [ Script Versioning ]
 SHOW_HEADER_SYSTEM_INFO="True"
-INSTALLER_SCRIPT_VERSION="0.3.9"
-OVERSEER_SCRIPT_VERSION="0.2.7"
+INSTALLER_SCRIPT_VERSION="0.4.0"
+OVERSEER_SCRIPT_VERSION="0.3.1"
 
 # [ Community URLs ]
 COMMUNITY_WEBSITE_URL="https://www.france-survival.fr/"
@@ -24,7 +24,7 @@ DYNAMIC_CONFIG_URL="http://127.0.0.1:8080/dynamic/current/dyn.ini"
 
 # [ ARK: Server Directory ]
 ARK_APP_ID="2430930"
-ARK_SERVER_DIR="/home/${USER_ACCOUNT}/server"
+ARK_SERVER_DIR="/home/${USER_ACCOUNT}/ARK-Server"
 
 # [ ARK: Server Executable ]
 ARK_SERVER_EXE="ArkAscendedServer.exe"
@@ -41,7 +41,7 @@ GUS_INI_FILE="${ARK_CONFIG_DIR}/GameUserSettings.ini"
 GAME_INI_FILE="${ARK_CONFIG_DIR}/Game.ini"
 
 # [ Overseer Manager ]
-OVERSEER_INSTALL_DIR="/home/${USER_ACCOUNT}/overseer"
+OVERSEER_INSTALL_DIR="/home/${USER_ACCOUNT}/OverseerManager"
 OVERSEER_SCRIPT_FILE="${OVERSEER_INSTALL_DIR}/overseer.sh"
 OVERSEER_MANAGER_DIR="${OVERSEER_INSTALL_DIR}/manager"
 

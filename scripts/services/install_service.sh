@@ -54,7 +54,7 @@ install_service() {
     if prompt confirm "VOULEZ-VOUS SUPPRIMER LE SERVICE $name SUR $HOSTNAME? [Oui/Non]"; then
       log "WARNING" "LE SERVICE $name VA ÊTRE SUPPRIMÉ SUR $HOSTNAME."
       service stop "$name"
-      service disable "$name"
+      service disable-now "$name" "$path"
       service delete "$name" "$path"
       service delete "$alias" "$path"
       service daemon-reload "$name"

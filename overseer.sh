@@ -41,8 +41,8 @@ else
 
   header "overseer"
 
-    SHORT_OPTS="vhs:r:p:u:d:c:t:"
-    LONG_OPTS="version,help,server:,purge:,update,dynamic:,configure:,task:"
+    SHORT_OPTS="vhs:r:p:u:d:c:t:m:"
+    LONG_OPTS="version,help,server:,purge:,update,dynamic:,configure:,task:,mods:"
 
     OPTIONS=$(getopt -o "$SHORT_OPTS" --long "$LONG_OPTS" -n "$(basename "$0")" -- "$@")
 
@@ -150,6 +150,11 @@ else
               shift 2
               ;;
           esac
+          ;;
+        -m | -mod)
+          action=$2
+          mod=$3
+          mods "$action" "$mod"
           ;;
         --)
           shift
