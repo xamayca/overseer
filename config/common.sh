@@ -24,7 +24,7 @@ DYNAMIC_CONFIG_URL="http://127.0.0.1:8080/dynamic/current/dyn.ini"
 
 # [ ARK: Server Directory ]
 ARK_APP_ID="2430930"
-ARK_SERVER_DIR="/home/${USER_ACCOUNT}/ARK-Server"
+ARK_SERVER_DIR="/home/${USER_ACCOUNT}/ARKServer"
 
 # [ ARK: Server Executable ]
 ARK_SERVER_EXE="ArkAscendedServer.exe"

@@ -18,7 +18,7 @@ check_steam_cmd_accept_license(){
   if debconf-show steamcmd | grep -q "\* steam/question: I AGREE"; then
     log "OK" "LA LICENCE STEAMCMD EST DÉJÀ ACCEPTÉE."
   else
-    log "WARNING]" "LA LICENCE STEAMCMD N'EST PAS ENCORE ACCEPTÉE."
+    log "WARNING" "LA LICENCE STEAMCMD N'EST PAS ENCORE ACCEPTÉE."
     if echo "steamcmd steam/question select I AGREE" | sudo debconf-set-selections; then
       log "SUCCESS" "LA LICENCE STEAMCMD A ÉTÉ ACCEPTÉE."
     else

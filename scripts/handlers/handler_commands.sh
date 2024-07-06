@@ -6,7 +6,7 @@ update_server(){
   check_server_build_id(){
     log "LOG" "VÉRIFICATION DU BUILD ID DU SERVEUR $ARK_SERVER_SERVICE DU FICHIER MANIFEST."
     if server_build_id=$(grep -E "^\s+\"buildid\"\s+" "$ARK_SERVER_MANIFEST_FILE" | grep -o '[[:digit:]]*'); then
-    log "OK" "LE BUILD ID DU SERVEUR $ARK_SERVER_SERVICE EST: $server_build_id"
+    log "INFO" "LE BUILD ID DU SERVEUR $ARK_SERVER_SERVICE EST: $server_build_id"
     else
       log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE LA RÉCUPÉRATION DU BUILD ID DU SERVEUR $ARK_SERVER_SERVICE."
       log "DEBUG" "VEUILLEZ ESSAYER DE RÉCUPÉRER LE BUILD ID DU SERVEUR $ARK_SERVER_SERVICE A L'AIDE DE LA COMMANDE SUIVANTE:"
@@ -18,7 +18,7 @@ update_server(){
   check_latest_build_id(){
     log "LOG" "VÉRIFICATION DU BUILD ID DU SERVEUR $ARK_SERVER_SERVICE DU SITE STEAM."
     if latest_build_id=$(curl -sX GET "$ARK_LATEST_BUILD_ID" | jq -r ".data.\"$ARK_APP_ID\".depots.branches.public.buildid"); then
-      log "OK" "LE DERNIER BUILD ID DU JEU $ARK_APP_ID EST: $latest_build_id"
+      log "INFO" "LE DERNIER BUILD ID DU JEU $ARK_APP_ID EST: $latest_build_id"
     else
       log "ERROR" "UNE ERREUR S'EST PRODUITE LORS DE LA RÉCUPÉRATION DU DERNIER BUILD ID DU JEU $ARK_APP_ID."
       log "DEBUG" "VEUILLEZ ESSAYER DE RÉCUPÉRER LE DERNIER BUILD ID DU JEU $ARK_APP_ID A L'AIDE DE LA COMMANDE SUIVANTE:"

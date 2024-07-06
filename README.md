@@ -28,7 +28,6 @@
 > > - #### `overseer --server restart` pour redémarrer le serveur.
 > > - #### `overseer --server update` pour mettre à jour le serveur.
 > > - #### `overseer --server edit` pour éditer le fichier de configuration.
-> > - #### `overseer --server backup` pour sauvegarder le serveur.
 > > - #### `overseer --purge start` pour démarrer la purge PVP.
 > > - #### `overseer --purge stop` pour arrêter la purge PVP.
 > > - #### `overseer --dynamic monday` pour activer la configuration dnyamique du lundi.

@@ -13,7 +13,7 @@ log(){
     "SUCCESS"|"OK") color="${BGREEN}"; emoji="✅" ;;  # Bold green
     "WARNING") color="${BYELLOW}"; emoji="${BLINK_START}❗${BLINK_END}" ;;  # Bold yellow
     "ERROR") color="${BRED}"; emoji="❌" ;;  # Bold red
-    "ATTENTION") color="${BRED}"; emoji="⚠️" ;;  # Bold red
+    "ATTENTION") color="${BRED}"; emoji="${BLINK_START}❗${BLINK_END}" ;;  # Bold red
     "INFO") color="${BBLUE}"; emoji="📌" ;;  # Bold blue
     "QUESTION") color="${BMAGENTA}"; emoji="❓" ;;  # Bold magenta
     "OVERSEER") color="${BMAGENTA}"; emoji="🤖" ;;  # Bold magenta

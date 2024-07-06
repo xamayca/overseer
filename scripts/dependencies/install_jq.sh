@@ -4,7 +4,7 @@ set -euo pipefail
 install_jq(){
 
   log "LOG" "VÉRIFICATION & INSTALLATION DU PAQUET JQ SUR $HOSTNAME."
-  if dpkg -l wine-stable &> /dev/null; then
+  if dpkg -l jq 2>/dev/null | grep -q "^ii"; then
     log "OK" "LE PAQUET JQ EST DÉJÀ INSTALLÉ SUR $HOSTNAME."
   else
     log "WARNING" "LE PAQUET JQ N'EST PAS INSTALLÉ SUR $HOSTNAME."

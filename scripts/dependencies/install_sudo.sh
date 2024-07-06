@@ -4,7 +4,7 @@ set -euo pipefail
 install_sudo(){
 
   log "LOG" "VÉRIFICATION DE L'INSTALLATION DU PAQUET SUDO SUR $HOSTNAME."
-  if dpkg -l sudo &> /dev/null; then
+  if dpkg -l sudo 2>/dev/null | grep -q "^ii"; then
     log "OK" "LE PAQUET SUDO EST DÉJÀ INSTALLÉ SUR $HOSTNAME."
   else
     log "WARNING" "LE PAQUET SUDO N'EST PAS INSTALLÉ SUR $HOSTNAME."

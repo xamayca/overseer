@@ -4,7 +4,7 @@ set -euo pipefail
 install_nfs_common(){
 
   log "LOG" "VÉRIFICATION & INSTALLATION DU PAQUET NFS-COMMON SUR $HOSTNAME."
-  if dpkg -l nfs-common &> /dev/null; then
+  if dpkg -l nfs-common 2>/dev/null | grep -q "^ii"; then
     log "OK" "LE PAQUET NFS-COMMON EST DÉJÀ INSTALLÉ SUR $HOSTNAME."
   else
     log "WARNING" "LE PAQUET NFS-COMMON N'EST PAS INSTALLÉ SUR $HOSTNAME."

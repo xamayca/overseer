@@ -112,7 +112,7 @@ service(){
     daemon-reload)
       service_daemon_reload "$service_name"
       ;;
-    start|stop|restart|reload)
+    start|stop|restart|reload|enable|disable)
       service_action "$action" "$service_name"
       ;;
     enable-now)
@@ -122,7 +122,7 @@ service(){
       service_delete "$service_name"
       ;;
     disable-now)
-      service_disable "$service_name" "$service_path"
+      service_disable_now "$service_name" "$service_path"
       ;;
     edit)
       local type="$3"
